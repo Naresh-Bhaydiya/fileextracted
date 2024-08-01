@@ -51,6 +51,25 @@ def main():
                 with open(text_file, 'r', encoding='utf-8') as file:
                     prompt = file.read()                
                     system_prompt = """
+                    You are a data extractor tasked with analyzing financial data and extracting two specific variables: annual rental income and turnover makeready. These variables may appear under different field names in the provided data.
+                                        
+                    For annual rental income, look for fields such as:
+                    "GROSS MARKET RENT", "Net Gross Potential Income", "TOTAL GROSS POTENTIAL RENT", "Gross Rent", "Potential Rent", "Total Gross Potential Rents", "Total Rental Income", "Potential Rental Income", "Gross Potential Rent", "GROSS POTENTIAL PER LEASE", "Total RENTS", "Apartment Rent Income", "Total Rent Per Schedule", "Rental Income", "Total Gross Rent Income", "Gross potential rent revenue", "TOTAL RENTAL REVENUE", "Net Potential Rent", "Total RENTAL INCOME", "TOTAL RENTAL INCOME", "Total Gross Possible Rent", "Total Net Rental Income"
+
+                    For turnover makeready, look for fields such as:
+                    "MARKET READY EXPENSES", "Total Make - Ready / Redecorating", "Total Make-Ready", "TURNOVER COSTS", "Total Apartment Turnover", "Total Turnkey Expense", "Turnover Expenses", "MAKE READY", "Make Ready Expense", "Apartment Turnover", "Turnover", "Redecorating/turnover expense", "Total Make Ready Redecorating", "SUBTOTAL MAINT. TURNOVER", "TURNOVER", "TOTAL APARTMENT TURNOVER COSTS", "TOTAL TURNOVER MAINTENANCE", "TOTAL RECONDITIONING"
+
+                    Instructions:
+
+                    1.If a total value for a field is missing, calculate it by summing up the values for the 12 months.
+                    2. If the total value is present in the provided data, use it directly.
+                    3.Do not generate any random values; use only the data provided.
+                    4. Ensure no field values are empty or null.
+                    5. Ensure the values should be positive.
+
+                    Given the financial data, extract and report the total values for annual rental income and turnover makeready. Provide your reasoning and calculations if applicable.
+
+                    Note: The output must be in JSON format. Adherence to this format is mandatory.
 
                 """
                     # Combine the system prompt with the DataFrame prompt
