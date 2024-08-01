@@ -50,26 +50,73 @@ def main():
             if text_file is not None:
                 with open(text_file, 'r', encoding='utf-8') as file:
                     prompt = file.read()                
-                    system_prompt = """
-                    You are a data extractor tasked with analyzing financial data and extracting two specific variables: annual rental income and turnover makeready. These variables may appear under different field names in the provided data.
-                                        
-                    For annual rental income, look for fields such as:
-                    "GROSS MARKET RENT", "Net Gross Potential Income", "TOTAL GROSS POTENTIAL RENT", "Gross Rent", "Potential Rent", "Total Gross Potential Rents", "Total Rental Income", "Potential Rental Income", "Gross Potential Rent", "GROSS POTENTIAL PER LEASE", "Total RENTS", "Apartment Rent Income", "Total Rent Per Schedule", "Rental Income", "Total Gross Rent Income", "Gross potential rent revenue", "TOTAL RENTAL REVENUE", "Net Potential Rent", "Total RENTAL INCOME", "TOTAL RENTAL INCOME", "Total Gross Possible Rent", "Total Net Rental Income"
+                    system_prompt = """You are a data extractor analyzing financial data. Your task is to extract two specific variables:
+                    1. Annual rental income
+                    2. Turnover makeready
+                    
+                    These variables may appear under different field names. Analyze the provided data carefully and report accurate results.
 
-                    For turnover makeready, look for fields such as:
-                    "MARKET READY EXPENSES", "Total Make - Ready / Redecorating", "Total Make-Ready", "TURNOVER COSTS", "Total Apartment Turnover", "Total Turnkey Expense", "Turnover Expenses", "MAKE READY", "Make Ready Expense", "Apartment Turnover", "Turnover", "Redecorating/turnover expense", "Total Make Ready Redecorating", "SUBTOTAL MAINT. TURNOVER", "TURNOVER", "TOTAL APARTMENT TURNOVER COSTS", "TOTAL TURNOVER MAINTENANCE", "TOTAL RECONDITIONING"
+                    For annual rental income, look for fields including but not limited to:
+                    - GROSS MARKET RENT
+                    - Net Gross Potential Income
+                    - TOTAL GROSS POTENTIAL RENT
+                    - Gross Rent
+                    - Potential Rent
+                    - Total Gross Potential Rents
+                    - Total Rental Income
+                    - Potential Rental Income
+                    - Gross Potential Rent
+                    - GROSS POTENTIAL PER LEASE
+                    - Total RENTS
+                    - Apartment Rent Income
+                    - Total Rent Per Schedule
+                    - Rental Income
+                    - Total Gross Rent Income
+                    - Gross potential rent revenue
+                    - TOTAL RENTAL REVENUE
+                    - Net Potential Rent
+                    - Total RENTAL INCOME
+                    - TOTAL RENTAL INCOME
+                    - Total Gross Possible Rent
+                    - Total Net Rental Income
+
+                    For turnover makeready, look for fields including but not limited to:
+                    - MARKET READY EXPENSES
+                    - Total Make - Ready / Redecorating
+                    - Total Make-Ready
+                    - TURNOVER COSTS
+                    - Total Apartment Turnover
+                    - Total Turnkey Expense
+                    - Turnover Expenses
+                    - MAKE READY
+                    - Make Ready Expense
+                    - Apartment Turnover
+                    - Turnover
+                    - Redecorating/turnover expense
+                    - Total Make Ready Redecorating
+                    - SUBTOTAL MAINT. TURNOVER
+                    - TURNOVER
+                    - TOTAL APARTMENT TURNOVER COSTS
+                    - TOTAL TURNOVER MAINTENANCE
+                    - TOTAL RECONDITIONING
 
                     Instructions:
-
-                    1.If a total value for a field is missing, calculate it by summing up the values for the 12 months.
+                    1. If a total value for a field is missing, calculate it by summing up the values for the 12 months.
                     2. If the total value is present in the provided data, use it directly.
-                    3.Do not generate any random values; use only the data provided.
+                    3. Do not generate any random values; use only the data provided.
                     4. Ensure no field values are empty or null.
-                    5. Ensure the values should be positive.
+                    5. Ensure the values are positive.
 
                     Given the financial data, extract and report the total values for annual rental income and turnover makeready. Provide your reasoning and calculations if applicable.
 
-                    Note: The output must be in JSON format. Adherence to this format is mandatory.
+                    Output your results in JSON format as follows:
+                    {
+                    "annual_rental_income": <value>,
+                    "turnover_makeready": <value>,
+                    }
+
+                Note: The output must be in JSON format. Adherence to this format is mandatory.
+
 
                 """
                     # Combine the system prompt with the DataFrame prompt
@@ -82,7 +129,7 @@ def main():
                         model='command-xlarge-nightly',  # Replace with the correct model ID
                         prompt=full_prompt,
                         max_tokens=1000,
-                        temperature=0.3
+                        temperature=0.2
                     )
 
                     # Print the generated response
